@@ -1,81 +1,160 @@
-# Gitee 部署指南
+# 国内部署指南
 
-本指南介绍如何将 **vue-notespace** 项目部署到 Gitee 平台，适合国内用户访问。
+本指南介绍如何将 **vue-notespace** 项目部署到国内平台，适合国内用户访问。
+
+> **重要提示（2025年1月）**：Gitee Pages 服务已于 2024 年 5 月正式停止服务，官方暂无恢复计划。请使用以下替代方案部署前端。
 
 ---
 
-## 一、前端部署到 Gitee Pages
+## 一、前端部署方案（Gitee Pages 替代方案）
 
-### 1.1 前置要求
+### 方案对比
 
-- Gitee 账号（需要完成实名认证才能使用 Pages）
-- 本地已安装 Node.js
+| 方案 | 国内访问速度 | 成本 | 复杂度 | 推荐指数 |
+|------|-------------|------|--------|----------|
+| Vercel + CDN | 较快 | 免费 | 低 | ⭐⭐⭐⭐⭐ |
+| Cloudflare Pages | 快 | 免费 | 低 | ⭐⭐⭐⭐⭐ |
+| 腾讯云静态托管 | 很快 | 有免费额度 | 低 | ⭐⭐⭐⭐ |
+| 阿里云 OSS + CDN | 很快 | 低成本 | 中 | ⭐⭐⭐⭐ |
+| GitHub Pages（原方案） | 慢 | 免费 | 低 | ⭐⭐⭐ |
 
-### 1.2 修改 vite.config.ts 配置
+---
 
-如果您的 Gitee 仓库名不是 `vue-notespace`，需要修改 `vite.config.ts`：
+### 方案一：Vercel 部署（推荐）
 
-```typescript
-// vite.config.ts
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import path from 'path'
+#### 1.1 为什么选择 Vercel
 
-export default defineConfig({
-  // Gitee Pages 部署路径，修改为你的仓库名
-  base: process.env.NODE_ENV === 'production' ? '/你的仓库名/' : '/',
-  server: {
-    port: 3001,
-    host: '0.0.0.0',
-  },
-  plugins: [vue()],
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src')
-    }
-  }
-})
+- ✅ 免费托管静态网站
+- ✅ 自动部署（连接 Git 仓库）
+- ✅ 国内访问速度尚可
+- ✅ 支持自定义域名
+- ✅ 自动 HTTPS
+
+#### 1.2 部署步骤
+
+1. 访问 [vercel.com](https://vercel.com)
+2. 使用 GitHub/GitLab 账号登录
+3. 点击 **New Project**
+4. 导入你的前端仓库：
+   - 可以是 GitHub 仓库
+   - 或先将代码推送到 GitHub，再导入
+
+5. 配置项目：
+   - **Framework Preset**: Vite
+   - **Root Directory**: `./`
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `dist`
+
+6. 点击 **Deploy**
+
+#### 1.3 配置环境变量（可选）
+
+如果需要配置 API 地址：
+
+1. 进入项目 **Settings** → **Environment Variables**
+2. 添加：
+   - Key: `VITE_API_BASE_URL`
+   - Value: `https://你的后端域名/api`
+
+#### 1.4 访问你的网站
+
+部署成功后，Vercel 会提供一个域名：
+```
+https://你的项目名.vercel.app
 ```
 
-### 1.3 构建前端项目
+---
 
+### 方案二：Cloudflare Pages（推荐）
+
+#### 2.1 为什么选择 Cloudflare Pages
+
+- ✅ 完全免费
+- ✅ 全球 CDN 加速（国内节点多）
+- ✅ 国内访问速度快
+- ✅ 无限带宽
+- ✅ 自动 HTTPS
+
+#### 2.2 部署步骤
+
+1. 访问 [pages.cloudflare.com](https://pages.cloudflare.com)
+2. 登录 Cloudflare 账号（需要先注册）
+3. 点击 **Create a project**
+4. 选择 **Connect to Git**
+5. 授权并选择你的 GitHub/GitLab 仓库
+
+6. 配置构建设置：
+   - **Build command**: `npm run build`
+   - **Build output directory**: `dist`
+   - **Root directory**: `/` (默认)
+
+7. 点击 **Save and Deploy**
+
+#### 2.3 访问你的网站
+
+```
+https://你的项目名.pages.dev
+```
+
+---
+
+### 方案三：腾讯云静态网站托管
+
+#### 3.1 为什么选择腾讯云
+
+- ✅ 国内访问速度快
+- ✅ 有免费额度
+- ✅ 与腾讯云其他服务集成好
+
+#### 3.2 部署步骤
+
+1. 访问 [腾讯云静态网站托管](https://cloud.tencent.com/product/tchost)
+2. 开通服务（新用户有免费额度）
+3. 创建静态网站：
+   - 站点名称：自定义
+   - 访问域名：系统自动生成
+
+4. 本地构建并上传：
 ```bash
-npm install
 npm run build
 ```
 
-构建完成后，会在项目根目录生成 `dist` 文件夹。
-
-### 1.4 在 Gitee 上创建仓库
-
-1. 访问 [gitee.com](https://gitee.com)
-2. 点击右上角 **"+"** → **新建仓库**
-3. 填写仓库信息：
-   - 仓库名称：`vue-notespace`（或其他名称）
-   - 是否公开：选择 **公开**
-4. 点击 **创建**
-
-### 1.5 启用 Gitee Pages
-
-1. 进入仓库页面，点击上方的 **服务** → **Gitee Pages**
-2. 如果未实名认证，会提示先完成认证
-3. 认证完成后，点击 **启动** 按钮
-4. 部署设置：
-   - 部署分支：选择 `main` 或 `master`
-   - 部署目录：填写 `dist`（如果根目录有 index.html，可以留空）
-5. 点击 **更新** 或 **启动**
-
-### 1.6 访问你的网站
-
-部署成功后，访问地址为：
-```
-https://你的用户名.gitee.io/你的仓库名/
+5. 使用 **CloudBase CLI** 上传：
+```bash
+npm install -g @cloudbase/cli
+cloudbase login
+cloudbase hosting deploy dist
 ```
 
-例如：
-```
-https://zhangsan.gitee.io/vue-notespace/
-```
+---
+
+### 方案四：阿里云 OSS + CDN
+
+#### 4.1 为什么选择阿里云 OSS
+
+- ✅ 国内访问速度最快
+- ✅ 稳定性高
+- ✅ 按量付费，成本低
+
+#### 4.2 部署步骤
+
+1. 开通 [阿里云 OSS](https://www.aliyun.com/product/oss)
+2. 创建 Bucket：
+   - 名称：自定义
+   - 区域：选择国内节点（如华东2）
+   - 读写权限：**公共读**
+
+3. 开通 CDN 加速：
+   - 进入 Bucket 管理
+   - 点击 **传输管理** → **域名管理**
+   - 添加 CDN 加速域名
+
+4. 上传静态文件：
+   - 使用 OSS 控制台直接上传 `dist` 目录
+   - 或使用 [ossutil](https://help.aliyun.com/document_detail/120075.html) 命令行工具：
+   ```bash
+   ossutil cp dist/ oss://你的bucket名称/ -rf -u
+   ```
 
 ---
 

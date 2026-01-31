@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import { isAuthenticated } from '../utils/auth'
 import Dashboard from '../components/Dashboard.vue'
 import Login from '../components/Login.vue'
@@ -39,8 +39,8 @@ const routes: RouteRecordRaw[] = [
 ]
 
 const router = createRouter({
-  // GitHub Pages 部署需要指定 base 路径
-  history: createWebHistory(import.meta.env.BASE_URL),
+  // 使用 hash 模式以兼容 GitHub Pages
+  history: createWebHashHistory(),
   routes
 })
 
