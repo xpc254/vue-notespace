@@ -39,7 +39,8 @@ const routes: RouteRecordRaw[] = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  // GitHub Pages 部署需要指定 base 路径
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes
 })
 
