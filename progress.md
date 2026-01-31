@@ -115,6 +115,8 @@
 | 2026-01-31 | Text alignment not showing in shared view | 1 | Added Quill alignment classes (.ql-align-center, etc.) support |
 | 2026-01-31 | Note list showing HTML tags in preview | 1 | Replaced stripMarkdown with stripHtml function (uses DOM to parse HTML) |
 | 2026-01-31 | "已共享" tab not filtering shared notes | 1 | Added `viewState === 'shared'` filter in Dashboard.vue filteredNotes |
+| 2026-01-31 | Editor rounded corners not desired | 1 | Set border-radius to 0 in editor-wrapper styles |
+| 2026-01-31 | Frontend deployed to GitHub | 1 | Pushed code to GitHub, GitHub Actions deploying to Pages |
 
 ## 5-Question Reboot Check
 | Question | Answer |

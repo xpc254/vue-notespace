@@ -130,7 +130,8 @@ const filteredNotes = computed(() => {
 
   // Filter by active tag
   if (activeTag.value) {
-    result = result.filter(n => n.tags.includes(activeTag.value))
+    const tag = activeTag.value
+    result = result.filter(n => n.tags.includes(tag))
   }
 
   // Filter by search
