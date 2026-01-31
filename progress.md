@@ -119,6 +119,7 @@
 | 2026-01-31 | GitHub Actions build failed (red ❌) | 1 | Fixed: installed @types/node, fixed Dashboard.vue activeTag null check, pushed fix |
 | 2026-01-31 | Frontend deployed to GitHub | 1 | Pushed code to GitHub, GitHub Actions deploying to Pages |
 | 2026-01-31 | GitHub Pages showing blank page | 1 | Removed conflicting Jekyll workflow, added .nojekyll file |
+| 2026-01-31 | GitHub Actions deploy failed (id-token:write) | 1 | Added permissions section and concurrency to deploy.yml |
 
 ## 5-Question Reboot Check
 | Question | Answer |
