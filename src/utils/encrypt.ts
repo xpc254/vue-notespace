@@ -1,3 +1,4 @@
+import CryptoJS from 'crypto-js';
 /**
  * 密码加密工具
  * 使用 SHA256 对密码进行哈希，防止明文传输
@@ -8,19 +9,24 @@
  * @param input 原始字符串
  * @returns SHA256 哈希值（十六进制字符串）
  */
+// export async function sha256(input: string): Promise<string> {
+//   // 将字符串转换为 Uint8Array
+//   const encoder = new TextEncoder()
+//   const data = encoder.encode(input)
+
+//   // 使用 SubtleCrypto 进行 SHA256 哈希
+//   const hashBuffer = await window.crypto.subtle.digest('SHA-256', data)
+
+//   // 将 ArrayBuffer 转换为十六进制字符串
+//   const hashArray = Array.from(new Uint8Array(hashBuffer))
+//   const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+//   return hashHex
+// }
+
 export async function sha256(input: string): Promise<string> {
-  // 将字符串转换为 Uint8Array
-  const encoder = new TextEncoder()
-  const data = encoder.encode(input)
-
-  // 使用 SubtleCrypto 进行 SHA256 哈希
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data)
-
-  // 将 ArrayBuffer 转换为十六进制字符串
-  const hashArray = Array.from(new Uint8Array(hashBuffer))
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
-
-  return hashHex
+  // CryptoJS.SHA256 直接接受字符串，返回 WordArray 对象
+  const hashHex = CryptoJS.SHA256(input).toString(CryptoJS.enc.Hex);
+  return hashHex; // async 函数自动包装为 resolved Promise
 }
 
 /**

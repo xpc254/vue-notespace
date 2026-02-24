@@ -3,7 +3,7 @@ import { encryptPassword } from '@/utils/encrypt'
 import { getToken, clearAuth } from '@/utils/auth'
 
 // API 基础配置
-const BASE_URL = 'http://localhost:8080'
+const BASE_URL = 'http://106.54.240.26:3000'
 
 // 是否启用前端密码加密
 const ENABLE_PASSWORD_ENCRYPTION = true

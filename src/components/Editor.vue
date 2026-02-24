@@ -332,7 +332,7 @@ const currentUser = computed(() => {
     </header>
 
     <div class="flex-1 overflow-y-auto custom-scrollbar py-2 md:py-2">
-      <div class="max-w-[900px] mx-auto px-4 md:px-6">
+      <div class="mx-auto px-4 md:px-6">
 
         <!-- 标签栏 -->
         <div class="flex flex-wrap items-center gap-2 mb-4 min-h-[40px] relative">
