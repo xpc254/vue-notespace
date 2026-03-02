@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, computed, onMounted, onUnmounted, nextTick } from 'vue'
 import type { Note } from '../types'
-import { getUserInfo } from '../utils/auth'
 import ShareModal from './ShareModal.vue'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
@@ -17,7 +16,6 @@ const emit = defineEmits<{
   update: [note: Note]
   togglePin: []
   delete: []
-  logout: []
   back: []
   share: []
   unshare: []
@@ -45,7 +43,6 @@ const title = ref(props.note.title)
 const content = ref(props.note.content)
 const tags = ref<string[]>(props.note.tags || [])
 const newTag = ref('')
-const showUserMenu = ref(false)
 const showTagMenu = ref(false)
 const showShareModal = ref(false)
 const highlightedIndex = ref(0)
@@ -251,11 +248,6 @@ const canCreateNewTag = computed(() => {
     !props.allTags.some(t => t.toLowerCase() === newTag.value.trim().toLowerCase()) &&
     !tags.value.some(t => t.toLowerCase() === newTag.value.trim().toLowerCase())
 })
-
-// 获取当前用户信息
-const currentUser = computed(() => {
-  return getUserInfo()
-})
 </script>
 
 <template>
@@ -307,26 +299,6 @@ const currentUser = computed(() => {
             class="p-2.5 rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 transition-all" title="删除笔记">
             <span class="material-symbols-outlined text-[22px]">delete</span>
           </button>
-        </div>
-
-        <div class="relative">
-          <button @click="showUserMenu = !showUserMenu"
-            class="size-8 ml-3 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center text-[12px] font-bold text-slate-500 hover:border-blue-600 transition-all overflow-hidden">
-            <span class="material-symbols-outlined text-lg">person</span>
-          </button>
-
-          <div v-if="showUserMenu"
-            class="absolute right-0 mt-2 w-48 bg-white border border-slate-100 shadow-2xl rounded-2xl p-2 z-50">
-            <div class="px-4 py-3 border-b border-slate-50">
-              <p class="text-xs font-bold text-slate-400 uppercase tracking-widest">账户设置</p>
-              <p class="text-sm font-semibold text-slate-700 truncate">{{ currentUser?.email || 'user@example.com' }}</p>
-            </div>
-            <button @click="emit('logout')"
-              class="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 rounded-xl transition-colors flex items-center gap-2">
-              <span class="material-symbols-outlined text-lg">logout</span>
-              退出登录
-            </button>
-          </div>
         </div>
       </div>
     </header>

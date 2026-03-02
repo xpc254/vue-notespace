@@ -430,7 +430,7 @@ watch(activeNotebookId, () => {
       <Sidebar :notebooks="notebooks" :active-id="activeNotebookId" :tags="uniqueTags" :active-tag="activeTag"
         @select-tag="handleSelectTag" @delete-tag="handleDeleteTag" @select="handleSelectNotebook" @add-click="showAddModal = true"
         @edit-click="setEditingNotebook" @delete-click="initiateDeleteNotebook" @all-notes="handleAllNotes"
-        @new-note="handleAddNote" />
+        @new-note="handleAddNote" @logout="handleLogout" />
     </div>
 
     <!-- Mobile sidebar overlay -->
@@ -454,7 +454,7 @@ watch(activeNotebookId, () => {
     ]">
       <template v-if="activeNote">
         <Editor :note="activeNote" :all-tags="uniqueTags" @update="handleUpdateNote" @toggle-pin="handleTogglePin"
-          @delete="handleEditorDelete" @logout="handleLogout" @back="mobileActiveView = 'list'"
+          @delete="handleEditorDelete" @back="mobileActiveView = 'list'"
           @share="handleShare" @unshare="handleUnshare" />
       </template>
       <template v-else>

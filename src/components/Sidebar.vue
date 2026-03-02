@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import type { Notebook } from '../types'
+import { getUserInfo } from '../utils/auth'
+import type { UserInfo } from '../api'
 
 interface SidebarProps {
   notebooks: Notebook[]
@@ -20,9 +22,20 @@ const emit = defineEmits<{
   deleteClick: [id: number]
   allNotes: []
   newNote: []
+  logout: []
 }>()
 
 const openMenuId = ref<number | null>(null)
+const showUserMenu = ref(false)
+
+const currentUser = computed<UserInfo | null>(() => {
+  return getUserInfo()
+})
+
+const userInitials = computed(() => {
+  const username = currentUser.value?.username || currentUser.value?.email || 'U'
+  return username.charAt(0).toUpperCase()
+})
 
 const handleMenuClick = (e: Event, id: number) => {
   e.stopPropagation()
@@ -141,12 +154,39 @@ const closeMenu = () => {
       </template>
     </nav>
 
-    <div class="p-6 shrink-0">
+    <div class="p-4 shrink-0 space-y-3">
       <button @click="emit('newNote')"
         class="w-full flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3.5 px-4 rounded-xl transition-all shadow-lg active:scale-[0.98]">
         <span class="material-symbols-outlined text-xl">add</span>
         新建笔记
       </button>
+
+      <div class="border-t border-slate-200 pt-3">
+        <div class="relative">
+          <button @click="showUserMenu = !showUserMenu"
+            class="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-slate-200/50 transition-all group">
+            <div class="size-9 rounded-full bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">
+              {{ userInitials }}
+            </div>
+            <div class="flex-1 text-left min-w-0">
+              <p class="text-sm font-semibold text-slate-700 truncate">{{ currentUser?.username || '用户' }}</p>
+              <p class="text-xs text-slate-400 truncate">{{ currentUser?.email || 'user@example.com' }}</p>
+            </div>
+            <span class="material-symbols-outlined text-slate-400 group-hover:text-slate-600 transition-colors">
+              expand_more
+            </span>
+          </button>
+
+          <div v-if="showUserMenu"
+            class="absolute bottom-full left-0 right-0 mb-2 bg-white border border-slate-100 shadow-2xl rounded-2xl p-2 z-50">
+            <button @click="emit('logout'); showUserMenu = false"
+              class="w-full text-left px-4 py-3 text-sm text-red-600 hover:bg-red-50 rounded-xl transition-colors flex items-center gap-2">
+              <span class="material-symbols-outlined text-lg">logout</span>
+              退出登录
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </aside>
 </template>
